@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link type="text/css" rel="stylesheet" href="bmesse.css" /> -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}" />
+    <title> {{ title }} </title>
+</head>
+<body>
+    <div id="your_container">
+        <!-- チャットの外側部分① -->
+        <div id="bms_messages_container">
+            <!-- ヘッダー部分② -->
+            <div id="bms_chat_header">
+                <!--ステータス-->
+                <div id="bms_chat_user_status">
+                    <!--ステータスアイコン-->
+                    <div id="bms_status_icon">●</div>
+                    <!--ユーザー名-->
+                    <div id="bms_chat_user_name">チャット</div>
+                </div>
+            </div>
+
+            <!-- タイムライン部分③ -->
+            <div id="bms_messages">
+                {% if dialogue_list %}
+                    {% for user_text, sys_text in dialogue_list %}
+                        <!-- user -->
+                        <div class="bms_message bms_right">
+                            <div class="bms_message_box">
+                                <div class="bms_message_content">
+                                    <div class="bms_message_text">{{ user_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bms_clear"></div>
+
+                        <!-- system -->
+                        <div class="bms_message bms_left">
+                            <div class="bms_message_box">
+                                <div class="bms_message_content">
+                                    <div class="bms_message_text">{{ sys_text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bms_clear"></div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <script type="text/javascript">
+                // チャット画面内一番下までスクロール
+                scroll_height = document.getElementById("bms_messages").scrollHeight;
+                document.getElementById("bms_messages").scrollTo(0, scroll_height);
+            </script>
+    
+            <!-- テキストボックス、送信ボタン④ -->
+            <form id="bms_send", action="/", method="POST">
+                <input id="bms_send_message", name="input_text">
+                <script type="text/javascript">
+                    // 入力欄にフォーカス
+                    document.getElementById("bms_send_message").focus();
+                </script>
+                <input id="bms_send_btn", type="submit", value="送信">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
